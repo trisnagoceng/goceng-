@@ -3,37 +3,384 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NADA Studio — We make things people actually remember</title>
+  <title>Orbital — Space themed portfolio</title>
+  <meta name="description" content="Orbital — a small studio that makes stellar design. Space themed demo with animated starfield and parallax." />
   <style>
-    /* Simple, single-file stylesheet — no JS required */
+    /* ===========================
+       Base / variables
+       Single-file, no external fonts required
+       =========================== */
     :root{
-      --bg:#FAF8F5; --text:#2D2A26; --accent:#C4785A; --muted:#7A8B6E;
-      --container:1200px;
-      --radius:8px;
+      --bg:#02030a;
+      --panel:#0f1720;
+      --muted:#96a0b1;
+      --accent:#7de3ff;
+      --accent-2:#8a6cff;
+      --glass: rgba(255,255,255,0.03);
+      --radius:12px;
+      --max:1200px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family: system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); color:var(--text);}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); color:#e6eef6; -webkit-font-smoothing:antialiased}
     a{color:inherit;text-decoration:none}
-    .wrap{max-width:var(--container);margin:0 auto;padding:28px;}
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
-    .brand{font-weight:700;font-size:1.25rem;letter-spacing:.04em}
-    nav{display:flex;gap:12px;align-items:center}
-    .btn{display:inline-block;padding:8px 14px;border-radius:999px;border:1px solid var(--text);background:transparent;font-weight:600}
-    .btn.primary{background:var(--text);color:#fff;border-color:var(--text)}
-    /* Hero */
-    .hero{display:flex;gap:28px;align-items:center;padding:40px 0}
-    .hero-left{flex:1}
-    .hero h1{font-size:clamp(28px,6vw,48px);line-height:1.02;margin:0 0 12px}
-    .hero p{margin:0 0 18px;color:#423e3b;max-width:54ch}
-    .hero-cta{display:flex;gap:12px}
-    .hero-right{width:360px;min-width:220px;background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 24px rgba(0,0,0,0.06)}
-    .now-playing{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--muted)}
-    .wave{display:inline-block;width:6px;height:18px;background:var(--muted);border-radius:2px}
-    /* Grid projects */
-    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin:34px 0}
-    .card{background:#fff;border-radius:10px;padding:18px;box-shadow:0 6px 24px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)}
-    .span-7{grid-column:span 7}
-    .span-5{grid-column:span 5}
+    .site{max-width:var(--max);margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+    .logo{font-weight:700;letter-spacing:0.06em}
+    nav{display:flex;gap:10px}
+    .pill{padding:8px 12px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,0.04);font-weight:600;font-size:.9rem}
+    .pill.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021020;border:0}
+    /* ===========================
+       CANVAS wrapper & hero
+       =========================== */
+    .hero-wrap{position:relative;min-height:78vh;overflow:hidden;border-radius:16px;display:flex;align-items:center}
+    canvas#stars{position:absolute;inset:0;display:block;width:100%;height:100%;z-index:0}
+    /* decorative planets */
+    .planet{
+      position:absolute;border-radius:50%;z-index:1;pointer-events:none;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6));
+      transform-origin:center center;
+      will-change:transform,opacity;
+    }
+    .planet.small{width:90px;height:90px;right:6%;top:12%;background:radial-gradient(circle at 30% 25%, #bdefff, #6fb3d9 30%, #1a5f7a 70%);}
+    .planet.med{width:160px;height:160px;left:8%;top:10%;background:radial-gradient(circle at 30% 35%, #ffd4f5,#b480ff 34%, #4b2b66 72%);}
+    .planet.ring{width:260px;height:260px;right:12%;bottom:6%;background:conic-gradient(#ffd9b8, #ffc2b8, #ffc2b8 40%, #ffd9b8 70%);opacity:0.95}
+    /* subtle orbit motion */
+    @keyframes orbit {
+      from{transform:translateY(0) rotate(0deg)}
+      to{transform:translateY(-6px) rotate(360deg)}
+    }
+    .planet.small{animation:orbit 18s linear infinite}
+    .planet.med{animation:orbit 28s linear reverse infinite}
+    .planet.ring{animation:orbit 42s linear infinite}
+    /* hero content */
+    .hero {
+      position:relative;z-index:2;padding:48px 28px;display:flex;gap:24px;align-items:center;width:100%;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(6px);
+    }
+    .hero-left{flex:1;max-width:720px}
+    h1{font-size:clamp(28px,5.5vw,56px);line-height:1.02;margin:0 0 12px;color:white;letter-spacing:-0.02em}
+    h1 .glow{color:var(--accent);text-shadow:0 6px 30px rgba(125,227,255,0.12)}
+    p.lead{margin:0;color:var(--muted);max-width:60ch}
+    .hero-cta{margin-top:18px;display:flex;gap:12px;align-items:center}
+    .cta{padding:12px 18px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.06);font-weight:700}
+    .cta.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#00101a;border:0}
+    /* animated spark line under heading */
+    .spark{width:160px;height:4px;border-radius:40px;margin-top:18px;background:linear-gradient(90deg, rgba(125,227,255,0.2), rgba(138,108,255,0.14));overflow:hidden}
+    .spark::after{content:'';display:block;height:100%;width:40%;background:linear-gradient(90deg,var(--accent),var(--accent-2));animation:glide 2.8s linear infinite}
+    @keyframes glide{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+    /* right column card */
+    .card{width:320px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);z-index:2}
+    .meta{font-size:.85rem;color:var(--muted);margin-top:8px}
+    /* ===========================
+       Sections: projects, about, contact
+       =========================== */
+    section{padding:46px 0;border-bottom:1px solid rgba(255,255,255,0.02)}
+    h2{margin:0 0 18px;font-size:1.5rem}
+    .projects-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;align-items:start}
+    .proj{grid-column:span 6;background:var(--panel);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .proj.small{grid-column:span 3}
+    .proj.large{grid-column:span 9}
+    .proj h3{margin:0 0 8px}
+    .proj p{margin:0;color:var(--muted)}
+    .about{display:flex;gap:20px;align-items:flex-start}
+    .about .panel{flex:1;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .contact-form{max-width:520px;background:var(--panel);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    label{display:block;font-weight:700;margin-bottom:6px}
+    input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    textarea{min-height:110px;resize:vertical}
+    /* ===========================
+       Micro interactions & animations
+       =========================== */
+    .proj, .card, .panel{transition:transform .34s cubic-bezier(.2,.8,.2,1), box-shadow .34s}
+    .proj:hover, .card:hover, .panel:hover{transform:translateY(-8px);box-shadow:0 22px 50px rgba(7,12,18,0.6)}
+    .logo{transition:transform .35s}
+    .logo:hover{transform:rotate(-6deg) scale(1.02)}
+    /* fade-in on scroll helpers */
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease, transform .6s ease}
+    .reveal.visible{opacity:1;transform:none}
+    /* responsive */
+    @media (max-width:980px){
+      .projects-grid{grid-template-columns:repeat(6,1fr)}
+      .proj{grid-column:span 6}
+      .card{display:none}
+      .hero{flex-direction:column;align-items:flex-start}
+      .planet.ring{display:none}
+    }
+    @media (max-width:600px){
+      .site{padding:16px}
+      h1{font-size:28px}
+      .projects-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    /* small helper */
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <!-- Canvas starfield -->
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <!-- decorative planets -->
+  <div class="planet small" aria-hidden="true"></div>
+  <div class="planet med" aria-hidden="true"></div>
+  <div class="planet ring" aria-hidden="true" style="border-radius:50%;"></div>
+
+  <div class="site">
+    <header>
+      <div class="logo">ORBITAL</div>
+      <nav>
+        <a class="pill" href="#work">Work</a>
+        <a class="pill" href="#about">About</a>
+        <a class="pill" href="#contact">Contact</a>
+        <a class="pill primary" href="#contact">Get in orbit</a>
+      </nav>
+    </header>
+
+    <!-- HERO -->
+    <div class="hero-wrap">
+      <div class="hero site">
+        <div class="hero-left reveal">
+          <h1>Design that feels <span class="glow">out of this world</span></h1>
+          <p class="lead">We craft brand identities, websites, and motion with a cosmic attention to detail. Small studio — big orbits.</p>
+          <div class="hero-cta">
+            <a class="cta primary" href="#work">Explore work</a>
+            <a class="cta" href="#about">Our approach</a>
+          </div>
+          <div class="spark" aria-hidden="true"></div>
+        </div>
+
+        <aside class="card reveal" role="complementary" aria-label="Now playing / status">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:800">Now in orbit</div>
+            <div class="muted" style="font-size:.85rem">Beta 0.9</div>
+          </div>
+          <div class="meta">Currently listening <strong style="color:var(--accent)">Sunset Drive — FKJ</strong></div>
+          <div style="height:12px"></div>
+          <div style="font-size:.9rem;color:var(--muted)">Based in Bandung · Tiny studio · Long timelines</div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- WORK -->
+    <section id="work">
+      <div class="reveal">
+        <h2>Selected Missions</h2>
+      </div>
+      <div class="projects-grid">
+        <article class="proj large reveal">
+          <h3>Kopi Nusantara — Rebrand</h3>
+          <div class="muted">Brand Identity · Packaging</div>
+          <p>A tactile identity built for an artisan roastery. Hand-drawn marks and storytelling system.</p>
+        </article>
+
+        <article class="proj small reveal">
+          <h3>Tanam — Mobile app</h3>
+          <div class="muted">Product · UX/UI</div>
+          <p>Plant-care app with friendly onboarding and delightful microcopy.</p>
+        </article>
+
+        <article class="proj small reveal">
+          <h3>Serat — Typeface</h3>
+          <div class="muted">Typography</div>
+          <p>Custom display typeface inspired by local signage and print craft.</p>
+        </article>
+
+        <article class="proj small reveal">
+          <h3>Bumi Studio — Website</h3>
+          <div class="muted">E-commerce</div>
+          <p>Minimal shop focused on sustainability and storytelling.</p>
+        </article>
+
+        <article class="proj small reveal">
+          <h3>Waktu Festival — Motion</h3>
+          <div class="muted">Motion design</div>
+          <p>Campaign assets and animated idents for an indie festival.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="reveal">
+        <h2>About the Crew</h2>
+      </div>
+      <div class="about">
+        <div class="panel reveal">
+          <h3>Two designers. One tiny studio.</h3>
+          <p class="muted">Raka & Maya work from a small studio in Bandung. We prioritize clarity, craft, and long-term thinking.</p>
+        </div>
+        <div class="panel reveal">
+          <h3>How we work</h3>
+          <ul class="muted" style="margin:8px 0 0 18px">
+            <li>Research & sketching</li>
+            <li>Iterative visual systems</li>
+            <li>Polished delivery & handover</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2 class="reveal">Launch a project</h2>
+      <div style="display:grid;grid-template-columns:1fr 420px;gap:22px">
+        <div class="reveal">
+          <p class="muted">Have an idea or a messy brief? Tell us about it — we'll reply within a couple of days.</p>
+        </div>
+
+        <form class="contact-form reveal" onsubmit="return false" aria-label="Contact form">
+          <label for="name">Name</label>
+          <input id="name" placeholder="What should we call you?" />
+          <label for="email" style="margin-top:10px">Email</label>
+          <input id="email" placeholder="Where can we reach you?" />
+          <label for="message" style="margin-top:10px">Project</label>
+          <textarea id="message" placeholder="Tell us about the project"></textarea>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button class="pill" type="reset">Reset</button>
+            <button class="pill primary" type="button" onclick="alert('Demo form — integrate a backend or Netlify Forms to receive messages.')">Send</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer style="padding:28px 0;color:var(--muted);font-size:.9rem">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="font-weight:700">ORBITAL</div>
+        <div class="muted">Built with curiosity · Made in Bandung</div>
+        <div class="muted">© 2026</div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ===========================
+       JavaScript: starfield, scroll reveals, parallax
+       =========================== -->
+  <script>
+    // Starfield on canvas
+    (function(){
+      const canvas = document.getElementById('stars');
+      const ctx = canvas.getContext('2d');
+      let w = canvas.width = innerWidth;
+      let h = canvas.height = innerHeight * 0.9; // hero area feel
+      const stars = [];
+      const TAU = Math.PI * 2;
+
+      function rand(min,max){ return Math.random() * (max - min) + min }
+      // create stars
+      for(let i=0;i<160;i++){
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          z: rand(0.2,1.5),
+          r: rand(0.3,1.8),
+          alpha: rand(0.2,0.95),
+          vx: rand(-0.02,0.02),
+          vy: rand(-0.02,0.02)
+        })
+      }
+
+      function resize(){
+        w = canvas.width = innerWidth;
+        h = canvas.height = innerHeight * 0.9;
+      }
+      addEventListener('resize', resize);
+
+      function draw(){
+        ctx.clearRect(0,0,w,h);
+        // subtle gradient background overlay to deepen space
+        const g = ctx.createLinearGradient(0,0,w,h);
+        g.addColorStop(0, 'rgba(2,3,10,0.0)');
+        g.addColorStop(1, 'rgba(2,3,10,0.15)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0,0,w,h);
+
+        // draw stars
+        for(const s of stars){
+          s.x += s.vx;
+          s.y += s.vy;
+          // wrap
+          if(s.x < 0) s.x = w;
+          if(s.x > w) s.x = 0;
+          if(s.y < 0) s.y = h;
+          if(s.y > h) s.y = 0;
+          const rad = s.r * (s.z*0.9);
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(255,255,255,'+ (s.alpha * (0.6 + 0.4*Math.sin(Date.now()/1000 + s.x))) +')';
+          ctx.arc(s.x, s.y, rad, 0, TAU);
+          ctx.fill();
+        }
+
+        // occasional shooting star
+        if(Math.random() < 0.008){
+          shoot();
+        }
+        requestAnimationFrame(draw);
+      }
+
+      function shoot(){
+        // simple shooting star effect
+        const sx = rand(0,w), sy = rand(0,h/2), len = rand(80,220), angle = rand(-0.2,0.2);
+        const grad = ctx.createLinearGradient(sx,sy,sx+Math.cos(angle)*len,sy+Math.sin(angle)*len);
+        grad.addColorStop(0,'rgba(255,255,255,1)');
+        grad.addColorStop(1,'rgba(125,227,255,0)');
+        let t=0;
+        function step(){
+          t += 1;
+          ctx.save();
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(sx + t*2*Math.cos(angle), sy + t*2*Math.sin(angle));
+          ctx.lineTo(sx + t*2*Math.cos(angle) + Math.cos(angle)*len, sy + t*2*Math.sin(angle) + Math.sin(angle)*len);
+          ctx.stroke();
+          ctx.restore();
+          if(t<25) requestAnimationFrame(step);
+        }
+        step();
+      }
+
+      draw();
+    })();
+
+    // Scroll reveal (intersection observer)
+    (function(){
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) {
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        })
+      }, {threshold: 0.12});
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    })();
+
+    // Parallax planets based on scroll
+    (function(){
+      const small = document.querySelector('.planet.small');
+      const med = document.querySelector('.planet.med');
+      const ring = document.querySelector('.planet.ring');
+      function onscroll(){
+        const s = window.scrollY;
+        small.style.transform = `translateY(${s * 0.05}px) rotate(${s*0.01}deg)`;
+        med.style.transform = `translateY(${s * 0.03}px) rotate(${-s*0.005}deg)`;
+        ring.style.transform = `translateY(${-s * 0.02}px) rotate(${s*0.002}deg)`;
+      }
+      addEventListener('scroll', onscroll, {passive:true});
+    })();
+
+    // small accessibility: focus outline on keyboard nav
+    (function(){
+      function handleKey(e){
+        if(e.key === 'Tab') document.documentElement.classList.add('show-focus');
+      }
+      addEventListener('keydown', handleKey, {once:true});
+    })();
+  </script>
+</body>
+</html>
     .span-4{grid-column:span 4}
     .span-8{grid-column:span 8}
     .project-title{font-weight:700;margin:8px 0}
