@@ -1,64 +1,201 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>NADA Studio — We make things people actually remember</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* --- Fallback: show content when JS is disabled/blocking --- */
-.animate-on-scroll,
-.hero__eyebrow,
-.hero__headline .line,
-.hero__subtext,
-.hero__cta,
-.hero__now-playing,
-.project-card,
-.about__content,
-.services__list,
-.contact__form-wrapper,
-.project-card__overlay {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* fallback background color supaya gak putih polos */
-body { background-color: #FAF8F5 !important; }
-    
-    /* ========================================
-       ROOT & RESET
-    ======================================== */
-    :root {
-      --off-white: #FAF8F5;
-      --charcoal: #2D2A26;
-      --terracotta: #C4785A;
-      --sage: #7A8B6E;
-      --sage-light: #9AAD8E;
-      --warm-gray: #A8A29E;
-      --light-accent: #E8E4DE;
-      
-      --font-serif: 'Crimson Pro', Georgia, serif;
-      --font-sans: 'DM Sans', -apple-system, sans-serif;
-      
-      --spacing-xs: 0.5rem;
-      --spacing-sm: 1rem;
-      --spacing-md: 1.5rem;
-      --spacing-lg: 2.5rem;
-      --spacing-xl: 4rem;
-      --spacing-2xl: 6rem;
-      --spacing-3xl: 9rem;
-      
-      --transition-fast: 0.2s ease;
-      --transition-medium: 0.4s ease;
-      --transition-slow: 0.6s ease;
+    /* Simple, single-file stylesheet — no JS required */
+    :root{
+      --bg:#FAF8F5; --text:#2D2A26; --accent:#C4785A; --muted:#7A8B6E;
+      --container:1200px;
+      --radius:8px;
     }
-    
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family: system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); color:var(--text);}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:var(--container);margin:0 auto;padding:28px;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0}
+    .brand{font-weight:700;font-size:1.25rem;letter-spacing:.04em}
+    nav{display:flex;gap:12px;align-items:center}
+    .btn{display:inline-block;padding:8px 14px;border-radius:999px;border:1px solid var(--text);background:transparent;font-weight:600}
+    .btn.primary{background:var(--text);color:#fff;border-color:var(--text)}
+    /* Hero */
+    .hero{display:flex;gap:28px;align-items:center;padding:40px 0}
+    .hero-left{flex:1}
+    .hero h1{font-size:clamp(28px,6vw,48px);line-height:1.02;margin:0 0 12px}
+    .hero p{margin:0 0 18px;color:#423e3b;max-width:54ch}
+    .hero-cta{display:flex;gap:12px}
+    .hero-right{width:360px;min-width:220px;background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 24px rgba(0,0,0,0.06)}
+    .now-playing{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--muted)}
+    .wave{display:inline-block;width:6px;height:18px;background:var(--muted);border-radius:2px}
+    /* Grid projects */
+    .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px;margin:34px 0}
+    .card{background:#fff;border-radius:10px;padding:18px;box-shadow:0 6px 24px rgba(0,0,0,0.06);border:1px solid rgba(0,0,0,0.04)}
+    .span-7{grid-column:span 7}
+    .span-5{grid-column:span 5}
+    .span-4{grid-column:span 4}
+    .span-8{grid-column:span 8}
+    .project-title{font-weight:700;margin:8px 0}
+    .meta{font-size:.85rem;color:var(--muted)}
+    /* About & services */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin:36px 0}
+    .about{background:var(--text);color:#fff;padding:22px;border-radius:10px}
+    .services .service{padding:14px 12px;border-radius:8px;background:#fff;margin-bottom:10px;border:1px solid rgba(0,0,0,0.04)}
+    /* Contact */
+    .contact{background:#fff;padding:18px;border-radius:10px;border:1px solid rgba(0,0,0,0.04)}
+    label{display:block;font-weight:600;margin-bottom:6px;font-size:.9rem}
+    input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);font-size:1rem}
+    textarea{min-height:110px;resize:vertical}
+    footer{padding:28px 0;color:var(--muted);font-size:.9rem;border-top:1px solid rgba(0,0,0,0.04);margin-top:36px}
+    /* Responsive */
+    @media (max-width:900px){
+      .grid{grid-template-columns:repeat(6,1fr)}
+      .span-7{grid-column:span 6}
+      .span-5{grid-column:span 6}
+      .span-4{grid-column:span 3}
+      .span-8{grid-column:span 6}
+      .wrap{padding:16px}
+      .two-col{grid-template-columns:1fr}
+      .hero{flex-direction:column;align-items:flex-start}
+      .hero-right{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">NADA</div>
+      <nav>
+        <a href="#work" class="btn">Work</a>
+        <a href="#about" class="btn">About</a>
+        <a href="#services" class="btn">Services</a>
+        <a href="#contact" class="btn primary">Say Hello</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <h1>We make things people actually remember.</h1>
+        <p>Small studio, careful craft. We design brand systems, websites, and motion that feel human — not templated. Based in Bandung; fueled by coffee and good music.</p>
+        <div class="hero-cta">
+          <a class="btn primary" href="#work">See our work</a>
+          <a class="btn" href="#contact">Start a project</a>
+        </div>
+      </div>
+      <aside class="hero-right" aria-hidden="false">
+        <div style="font-weight:700;margin-bottom:8px">Currently vibing</div>
+        <div class="now-playing">
+          <div style="display:flex;gap:4px;align-items:end">
+            <span class="wave" style="height:8px;opacity:.7"></span>
+            <span class="wave" style="height:12px;opacity:.9"></span>
+            <span class="wave" style="height:6px;opacity:.6"></span>
+            <span class="wave" style="height:14px;opacity:1"></span>
+          </div>
+          <div style="font-size:.95rem;color:#6b6b6b">Sunset Drive — FKJ</div>
+        </div>
+        <div style="margin-top:14px;font-size:.9rem;color:#777">Based in Bandung · Two-person studio · Honest timelines</div>
+      </aside>
+    </section>
+
+    <section id="work">
+      <h2 style="margin:6px 0 12px">Selected Work</h2>
+      <div class="grid">
+        <div class="card span-7" style="display:flex;flex-direction:column;justify-content:space-between">
+          <div>
+            <div style="font-size:1.6rem;font-weight:700">Kopi Nusantara Rebrand</div>
+            <div class="meta">Brand Identity · Yogyakarta · 2024</div>
+            <p style="margin-top:14px;color:#444">Artisan coffee brand identity with hand-drawn marks and a tactile color system.</p>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:12px">
+            <div style="width:48px;height:48px;background:#e9dfd2;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700">☕</div>
+            <div style="font-size:.9rem;color:#666">Brand identity, packaging, visual language</div>
+          </div>
+        </div>
+
+        <div class="card span-5">
+          <div style="font-weight:700">Tanam — Plant care app</div>
+          <div class="meta">App design · Mobile · 2025</div>
+          <p style="margin-top:10px;color:#444">Companion app for urban plant parents with friendly UX and simple onboarding.</p>
+        </div>
+
+        <div class="card span-4">
+          <div style="font-weight:700">Serat — Typeface</div>
+          <div class="meta">Typography · Custom · 2024</div>
+          <p style="margin-top:8px;color:#444">Hand-drawn display typeface for a local bookstore.</p>
+        </div>
+
+        <div class="card span-8">
+          <div style="font-weight:700">Bumi Studio — Website</div>
+          <div class="meta">Web design · E‑commerce · 2025</div>
+          <p style="margin-top:10px;color:#444">A minimal e‑commerce experience with emphasis on sustainability and storytelling.</p>
+        </div>
+
+        <div class="card span-4">
+          <div style="font-weight:700">Waktu Festival — Motion</div>
+          <div class="meta">Motion graphics · Festival · 2024</div>
+          <p style="margin-top:10px;color:#444">Animated identity and social assets for an indie festival.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="two-col">
+      <aside class="about">
+        <div style="font-weight:700;font-size:1.25rem;margin-bottom:6px">Two designers. One small studio.</div>
+        <p style="margin:0;color:#ddd">Hi — we're Raka & Maya. We work from a tiny studio in Bandung. We take time to craft ideas that last.</p>
+      </aside>
+
+      <div>
+        <h3 style="margin-top:0">What we believe</h3>
+        <ul style="margin:10px 0 0 18px;color:#444">
+          <li>Honest work beats flashy trends</li>
+          <li>Design is a conversation</li>
+          <li>Small teams move fast and think deep</li>
+        </ul>
+
+        <div style="margin-top:18px">
+          <h4 style="margin:0 0 8px">Services</h4>
+          <div class="services">
+            <div class="service"><strong>Brand Identity</strong><div style="color:#666;font-size:.95rem">Logos, systems, guidelines</div></div>
+            <div class="service"><strong>Web Design</strong><div style="color:#666;font-size:.95rem">Landing pages to full sites</div></div>
+            <div class="service"><strong>Art Direction</strong><div style="color:#666;font-size:.95rem">Photoshoots, campaigns</div></div>
+            <div class="service"><strong>Motion Graphics</strong><div style="color:#666;font-size:.95rem">Animated logos & explainers</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:30px">
+      <div style="display:grid;grid-template-columns:1fr 380px;gap:20px">
+        <div>
+          <h3 style="margin-top:0">Let's make something real.</h3>
+          <p style="color:#444">Want to work together? Tell us about your project. We'll reply within a day or two.</p>
+        </div>
+        <form class="contact" action="#" onsubmit="return false" aria-label="Contact form (non-functional)">
+          <label for="name">Your name</label>
+          <input id="name" name="name" placeholder="What should we call you?" />
+          <label for="email" style="margin-top:10px">Email</label>
+          <input id="email" name="email" placeholder="Where can we reach you?" />
+          <label for="message" style="margin-top:10px">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us about the project"></textarea>
+          <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+            <button class="btn" type="reset">Reset</button>
+            <button class="btn primary" type="button" onclick="alert('This demo form does not send — deploy with a backend or Netlify forms to receive messages.')">Send message</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="font-weight:700">NADA Studio</div>
+        <div style="color:#6b6b6b">Built with love, not algorithms · Made in Bandung</div>
+        <div style="color:#6b6b6b">© 2026</div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
     }
     
     html {
