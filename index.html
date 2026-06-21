@@ -1,40 +1,686 @@
-<!doctype html>
-<html lang="id">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>NADA Studio — Demo</title>
-  <meta name="description" content="Simple safe portfolio demo for NADA Studio" />
-  <style>
-    /* Simple, robust styles — system fonts only */
-    :root{
-      --bg:#ffffff;
-      --text:#222;
-      --muted:#666;
-      --accent:#C4785A;
-      --maxw:1100px;
-      --gap:18px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background:var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.45;
-    }
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:28px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{font-weight:700;font-size:1.1rem;letter-spacing:0.06em}
-    nav{display:flex;gap:12px;align-items:center}
-    a{color:inherit;text-decoration:none}
-    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--text);border-radius:6px;font-weight:600}
-    .hero{padding:36px 0 18px}
-    h1{font-size:clamp(1.6rem,4vw,2.6rem);margin:8px 0 12px}
-    p.lead{color:var(--muted);max-width:70ch}
+
+
+
+Data yang akan saya gunakan dalam craft:
+
+| Jenis data | Isi |
+|---|---|
+| Copy halaman | Judul hero, subtitle singkat, CTA, teks section, deskripsi fitur, dan footer |
+| Data visual planet | 6 planet monokrom dengan nama, kode, pola permukaan, dan karakter orbit berbeda |
+| Sistem motion | Starfield pixel, meteor berkala, orbit berputar, planet mengambang, glow lembut, dan parallax scroll ringan |
+
+Berikut craft React untuk single-page website pixel art luar angkasa monokrom yang immersive dan responsif.
+
+
+import React, { useEffect, useMemo, useState } from "react";
+
+const planetCatalog = [
+  {
+    name: "NOX PRIME",
+    code: "NP-01",
+    variant: "crater",
+    summary:
+      "Planet batu bertekstur kawah dengan sorot putih terang, memberi nuansa dingin, padat, dan misterius.",
+    traits: ["Kawah mikro", "Bayangan tajam", "Orbit lambat"],
+  },
+  {
+    name: "VELA STATIC",
+    code: "VS-02",
+    variant: "banded",
+    summary:
+      "Lapisan atmosfer bergaris membentuk pola band retro-futuristik yang tegas dan elegan.",
+    traits: ["Garis atmosfer", "Kilau lembut", "Rotasi stabil"],
+  },
+  {
+    name: "GRID LUNA",
+    code: "GL-03",
+    variant: "gridlike",
+    summary:
+      "Permukaan grid piksel menghadirkan kesan teknis, bersih, dan modern seperti dunia sintetis.",
+    traits: ["Pola grid", "Echo scan", "Orbit aktif"],
+  },
+  {
+    name: "UMBRA ARC",
+    code: "UA-04",
+    variant: "eclipsed",
+    summary:
+      "Separuh sisinya tertutup bayangan pekat, menciptakan siluet dramatis dengan depth premium.",
+    traits: ["Efek eclipse", "Glow tipis", "Drift halus"],
+  },
+  {
+    name: "RING VOID",
+    code: "RV-05",
+    variant: "ringed",
+    summary:
+      "Planet cincin monokrom dengan orbit dekoratif dan pantulan abu-abu yang terasa sangat sinematik.",
+    traits: ["Cincin tipis", "Refleksi orbit", "Pulse glow"],
+  },
+  {
+    name: "MOSAIC IX",
+    code: "MX-06",
+    variant: "mosaic",
+    summary:
+      "Permukaan kotak-kotak berlapis membentuk gaya pixel art yang paling eksplisit dan khas.",
+    traits: ["Mosaic surface", "Kontras tinggi", "Orbit cepat"],
+  },
+];
+
+const features = [
+  {
+    title: "MOTION UNIVERSE",
+    text:
+      "Setiap layer bergerak halus: planet mengambang, orbit berputar, bintang berkedip, dan meteor lewat untuk menciptakan kesan ruang yang terus hidup.",
+    icon: "pulse",
+  },
+  {
+    title: "PIXEL PRECISION",
+    text:
+      "Grid, sudut dekoratif, bentuk planet, dan detail geometris dirancang agar estetika pixel tetap kuat tanpa kehilangan rasa premium dan clean.",
+    icon: "grid",
+  },
+  {
+    title: "MONOCHROME DEPTH",
+    text:
+      "Seluruh komposisi memakai hitam, putih, dan spektrum abu-abu untuk mempertahankan identitas visual yang tegas, futuristik, dan elegan.",
+    icon: "orbit",
+  },
+  {
+    title: "RESPONSIVE IMMERSION",
+    text:
+      "Layout responsif menjaga visual tetap wow dari mobile ke desktop dengan hierarki tipografi besar, whitespace rapi, dan interaksi hover yang terasa halus.",
+    icon: "frame",
+  },
+];
+
+function PixelCorner({ className = "" }) {
+  return (
+
+  );
+}
+
+function SectionHeading({ eyebrow, title, description }) {
+  return (
+
+        {eyebrow}
+
+        {title}
+
+        {description}
+
+  );
+}
+
+function PlanetVisual({ variant = "crater", size = "medium", decorative = false }) {
+  const sizeClasses = {
+    small: "h-28 w-28 sm:h-32 sm:w-32",
+    medium: "h-36 w-36 sm:h-44 sm:w-44",
+    large: "h-48 w-48 sm:h-64 sm:w-64",
+  };
+
+  return (
+
+        {variant === "ringed" && }
+
+  );
+}
+
+function FeatureIcon({ icon }) {
+  if (icon === "pulse") {
+    return (
+
+    );
+  }
+
+  if (icon === "grid") {
+    return (
+
+        {Array.from({ length: 9 }).map((_, index) => (
+
+        ))}
+
+    );
+  }
+
+  if (icon === "orbit") {
+    return (
+
+    );
+  }
+
+  return (
+
+  );
+}
+
+function PlanetCard({ planet }) {
+  return (
+
+              {planet.code}
+
+              {planet.name}
+
+            orbit
+
+
+        {planet.summary}
+
+          {planet.traits.map((trait) => (
+
+              {trait}
+
+          ))}
+
+  );
+}
+
+function FeatureCard({ feature }) {
+  return (
+
+          {feature.title}
+
+        {feature.text}
+
+  );
+}
+
+function Starfield({ stars, meteors, scrollPosition }) {
+  return (
+
+      {stars.map((star) => (
+
+      ))}
+      {meteors.map((meteor) => (
+
+      ))}
+
+  );
+}
+
+export default function MonochromePixelSpaceWebsite() {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollPosition(window.scrollY || 0);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const stars = useMemo(() => {
+    return Array.from({ length: 120 }, (_, index) => ({
+      id: index,
+      left: Math.random() * 100,
+      top: Math.random() * 100,
+      delay: Math.random() * 8,
+      duration: 2.5 + Math.random() * 5,
+      opacity: 0.25 + Math.random() * 0.75,
+      sizeClass:
+        index % 5 === 0
+          ? "h-2 w-2"
+          : index % 3 === 0
+          ? "h-1.5 w-1.5"
+          : "h-1 w-1",
+    }));
+  }, []);
+
+  const meteors = useMemo(() => {
+    return [
+      { id: 1, left: 88, top: 12, delay: 1, duration: 10 },
+      { id: 2, left: 75, top: 26, delay: 5, duration: 12 },
+      { id: 3, left: 92, top: 38, delay: 9, duration: 11 },
+      { id: 4, left: 80, top: 52, delay: 13, duration: 14 },
+    ];
+  }, []);
+
+  return (
+
+          {`
+            html {
+              scroll-behavior: smooth;
+            }
+
+            body {
+              font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            }
+
+            .space-background {
+              background:
+                radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08), transparent 35%),
+                radial-gradient(circle at 85% 15%, rgba(255,255,255,0.07), transparent 28%),
+                linear-gradient(180deg, #020202 0%, #000000 35%, #030303 100%);
+            }
+
+            .hero-radial {
+              background:
+                radial-gradient(circle, rgba(255,255,255,0.12), transparent 60%);
+              filter: blur(12px);
+            }
+
+            .pixel-grid {
+              background-image:
+                linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+              background-size: 34px 34px;
+              mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+              -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 90%);
+            }
+
+            .feature-grid {
+              background-image:
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+              background-size: 26px 26px;
+            }
+
+            .scan-overlay {
+              background: linear-gradient(
+                180deg,
+                transparent 0%,
+                rgba(255,255,255,0.06) 50%,
+                transparent 100%
+              );
+              animation: scanMove 9s linear infinite;
+            }
+
+            .pixel-corner {
+              width: 10px;
+              height: 10px;
+              background: rgba(255,255,255,0.95);
+              box-shadow:
+                12px 0 rgba(255,255,255,0.95),
+                0 12px rgba(255,255,255,0.95),
+                24px 0 rgba(255,255,255,0.35),
+                0 24px rgba(255,255,255,0.35);
+              opacity: 0.8;
+            }
+
+            .star-pixel {
+              background: rgba(255,255,255,0.95);
+              box-shadow: 0 0 14px rgba(255,255,255,0.4);
+              animation-name: twinkle;
+              animation-iteration-count: infinite;
+              animation-timing-function: ease-in-out;
+            }
+
+            .meteor-line {
+              width: 120px;
+              height: 2px;
+              background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0.9),
+                rgba(255,255,255,0)
+              );
+              transform: rotate(-25deg);
+              box-shadow: 0 0 18px rgba(255,255,255,0.35);
+              animation-name: meteorFlight;
+              animation-timing-function: linear;
+              animation-iteration-count: infinite;
+              opacity: 0;
+            }
+
+            .meteor-line::after {
+              content: "";
+              position: absolute;
+              right: 0;
+              top: -2px;
+              width: 6px;
+              height: 6px;
+              background: #ffffff;
+              box-shadow: 0 0 18px rgba(255,255,255,0.9);
+            }
+
+            .orbit-line {
+              border: 1px solid rgba(255,255,255,0.18);
+              border-radius: 9999px;
+              animation: orbitSpin 18s linear infinite;
+            }
+
+            .orbit-reverse {
+              animation-direction: reverse;
+              animation-duration: 12s;
+              opacity: 0.5;
+            }
+
+            .satellite-track {
+              animation: orbitSpin 10s linear infinite;
+            }
+
+            .satellite-reverse {
+              animation-direction: reverse;
+              animation-duration: 14s;
+            }
+
+            .satellite-pixel {
+              position: absolute;
+              left: 50%;
+              top: 2px;
+              width: 8px;
+              height: 8px;
+              margin-left: -4px;
+              background: #ffffff;
+              box-shadow: 0 0 14px rgba(255,255,255,0.65);
+            }
+
+            .satellite-secondary {
+              background: #a1a1aa;
+              box-shadow: 0 0 14px rgba(255,255,255,0.35);
+            }
+
+            .planet-body {
+              position: absolute;
+              border-radius: 9999px;
+              overflow: hidden;
+              border: 1px solid rgba(255,255,255,0.14);
+              box-shadow:
+                inset -18px -18px 28px rgba(0,0,0,0.42),
+                inset 10px 10px 18px rgba(255,255,255,0.08),
+                0 0 34px rgba(255,255,255,0.08);
+              animation: pulseGlow 6s ease-in-out infinite;
+            }
+
+            .planet-shine {
+              position: absolute;
+              inset: 0;
+              background:
+                linear-gradient(180deg, rgba(255,255,255,0.18), transparent 40%, rgba(0,0,0,0.25)),
+                radial-gradient(circle at 30% 25%, rgba(255,255,255,0.25), transparent 24%);
+              mix-blend-mode: screen;
+            }
+
+            .planet-body.crater {
+              background:
+                radial-gradient(circle at 28% 28%, rgba(255,255,255,0.95) 0 11%, transparent 12%),
+                radial-gradient(circle at 65% 60%, rgba(255,255,255,0.18) 0 8%, transparent 9%),
+                radial-gradient(circle at 44% 74%, rgba(255,255,255,0.13) 0 7%, transparent 8%),
+                linear-gradient(145deg, #f5f5f5 0%, #9a9a9a 35%, #555555 65%, #111111 100%);
+            }
+
+            .planet-body.banded {
+              background:
+                linear-gradient(145deg, rgba(255,255,255,0.22), rgba(0,0,0,0.18)),
+                repeating-linear-gradient(
+                  165deg,
+                  #f1f1f1 0 9px,
+                  #bbbbbb 9px 18px,
+                  #7f7f7f 18px 27px,
+                  #3a3a3a 27px 36px,
+                  #151515 36px 45px
+                );
+            }
+
+            .planet-body.gridlike {
+              background:
+                linear-gradient(145deg, #f0f0f0 0%, #7f7f7f 50%, #151515 100%),
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.18) 0 3px, transparent 3px 14px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 3px, transparent 3px 14px);
+              background-blend-mode: screen, normal, normal;
+            }
+
+            .planet-body.eclipsed {
+              background:
+                radial-gradient(circle at 30% 34%, rgba(255,255,255,0.95) 0 15%, rgba(255,255,255,0.3) 16%, transparent 32%),
+                radial-gradient(circle at 78% 35%, rgba(0,0,0,0.82) 0 34%, rgba(0,0,0,0.92) 35%, transparent 56%),
+                linear-gradient(135deg, #d8d8d8 0%, #8b8b8b 45%, #181818 100%);
+            }
+
+            .planet-body.ringed {
+              background:
+                radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0 14%, rgba(255,255,255,0.28) 15%, transparent 32%),
+                linear-gradient(135deg, #e3e3e3 0%, #8f8f8f 45%, #202020 100%);
+            }
+
+            .planet-body.mosaic {
+              background:
+                linear-gradient(140deg, rgba(255,255,255,0.18), rgba(0,0,0,0.18)),
+                repeating-linear-gradient(
+                  90deg,
+                  #f4f4f4 0 10px,
+                  #c4c4c4 10px 20px,
+                  #848484 20px 30px,
+                  #3a3a3a 30px 40px,
+                  #111111 40px 50px
+                ),
+                repeating-linear-gradient(
+                  0deg,
+                  rgba(255,255,255,0.15) 0 8px,
+                  transparent 8px 16px
+                );
+              background-blend-mode: screen, normal, normal;
+            }
+
+            .planet-ring {
+              position: absolute;
+              left: -18%;
+              right: -18%;
+              top: 44%;
+              height: 16%;
+              border-radius: 9999px;
+              border-top: 1px solid rgba(255,255,255,0.45);
+              border-bottom: 1px solid rgba(255,255,255,0.18);
+              background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.02),
+                rgba(255,255,255,0.15),
+                rgba(255,255,255,0.02)
+              );
+              transform: rotate(-14deg);
+              box-shadow: 0 0 20px rgba(255,255,255,0.08);
+            }
+
+            .float-a {
+              animation: floatA 7s ease-in-out infinite;
+            }
+
+            .float-b {
+              animation: floatB 9s ease-in-out infinite;
+            }
+
+            .float-c {
+              animation: floatC 8s ease-in-out infinite;
+            }
+
+            .float-d {
+              animation: floatD 10s ease-in-out infinite;
+            }
+
+            @keyframes twinkle {
+              0%, 100% {
+                opacity: 0.2;
+                transform: scale(1);
+              }
+              50% {
+                opacity: 1;
+                transform: scale(1.6);
+              }
+            }
+
+            @keyframes orbitSpin {
+              from {
+                transform: rotate(0deg);
+              }
+              to {
+                transform: rotate(360deg);
+              }
+            }
+
+            @keyframes pulseGlow {
+              0%, 100% {
+                box-shadow:
+                  inset -18px -18px 28px rgba(0,0,0,0.42),
+                  inset 10px 10px 18px rgba(255,255,255,0.08),
+                  0 0 28px rgba(255,255,255,0.06);
+              }
+              50% {
+                box-shadow:
+                  inset -18px -18px 28px rgba(0,0,0,0.42),
+                  inset 10px 10px 18px rgba(255,255,255,0.12),
+                  0 0 40px rgba(255,255,255,0.12);
+              }
+            }
+
+            @keyframes meteorFlight {
+              0% {
+                transform: translate3d(140px, -40px, 0) rotate(-25deg);
+                opacity: 0;
+              }
+              8% {
+                opacity: 1;
+              }
+              35% {
+                opacity: 1;
+              }
+              100% {
+                transform: translate3d(-780px, 360px, 0) rotate(-25deg);
+                opacity: 0;
+              }
+            }
+
+            @keyframes scanMove {
+              0% {
+                transform: translateY(-100%);
+              }
+              100% {
+                transform: translateY(100%);
+              }
+            }
+
+            @keyframes floatA {
+              0%, 100% {
+                transform: translateY(0px);
+              }
+              50% {
+                transform: translateY(-16px);
+              }
+            }
+
+            @keyframes floatB {
+              0%, 100% {
+                transform: translateY(0px) translateX(0px);
+              }
+              50% {
+                transform: translateY(-12px) translateX(6px);
+              }
+            }
+
+            @keyframes floatC {
+              0%, 100% {
+                transform: translateY(0px) translateX(0px);
+              }
+              50% {
+                transform: translateY(-18px) translateX(-6px);
+              }
+            }
+
+            @keyframes floatD {
+              0%, 100% {
+                transform: translateY(0px);
+              }
+              50% {
+                transform: translateY(-10px);
+              }
+            }
+          `}
+
+          Lewati ke konten
+
+                  MERLIN
+
+                  MONO COSMOS
+
+                Hero
+
+                Planet
+
+                Fitur
+
+                Footer
+
+                  Pixel Art / Futuristic / Monochrome
+
+                  MONO
+                  COSMOS
+
+                  Website luar angkasa bergaya pixel art modern dengan nuansa
+                  hitam, putih, dan gradasi abu-abu. Bersih, sinematik, hidup,
+                  dan penuh gerak halus untuk pengalaman visual yang imersif.
+
+                    Jelajahi Planet
+
+                    Lihat Fitur
+
+                  {[
+                    { value: "120+", label: "Pixel stars" },
+                    { value: "06", label: "Planet styles" },
+                    { value: "∞", label: "Micro motion" },
+                  ].map((stat) => (
+
+                        {stat.value}
+
+                        {stat.label}
+
+                  ))}
+
+                {planetCatalog.map((planet) => (
+
+                ))}
+
+                {features.map((feature) => (
+
+                ))}
+
+                        Experience Layer
+
+                        Clean. Futuristic. Immersive.
+
+                        Seluruh halaman dirancang untuk memberi rasa “deep space”
+                        tanpa mengorbankan kebersihan visual. Struktur section
+                        yang rapi bertemu dengan detail pixel yang kontras,
+                        motion halus, dan sorot abu-abu yang lembut.
+
+                        {["Hover glow", "Soft parallax", "Pixel corners", "Orbit loops"].map(
+                          (item) => (
+
+                              {item}
+
+                          )
+                        )}
+
+                    <div
+                      className="absolute inset
+Gas — web tema luar angkasa pixel monokromnya sudah gue buatin dalam bentuk single-page React yang tampilannya fokus ke vibe hitam-putih-abu, futuristik, dan rame animasi.
+
+Yang sudah jadi di versi itu:
+
+Hero section besar** dengan nuansa cinematic, judul kuat, subtitle, dan tombol CTA.
+Tema visual luar angkasa pixel art modern** dengan aksen grid, pixel corners, dan detail monokrom yang clean.
+Background starfield** penuh bintang kecil yang berkedip.
+Animasi planet berbeda-beda** dengan karakter visual masing-masing, jadi nggak cuma planet bulat doang tapi punya pola unik seperti:
+  kawah
+  garis atmosfer
+  grid pixel
+  eclipse/shadow
+  planet bercincin
+  mosaic pixel
+Animasi hidup di seluruh halaman**, termasuk:
+  planet melayang
+  orbit berputar
+  meteor lewat sesekali
+  glow lembut monokrom
+  parallax ringan saat scroll
+  hover interaction biar lebih premium
+Beberapa section lengkap**, jadi bukan cuma landing doang:
+  hero
+  showcase planet
+  fitur
+  footer
+Responsive** buat mobile sampai desktop.
+Styling dibuat tetap premium dan estetik, walau warnanya cuma hitam, putih, dan abu-abu.
+
+Yang belum gue kerjain lebih lanjut dari versi itu adalah penyesuaian spesifik sesuai selera lo yang lebih detail, misalnya kalau lo pengen:
+
+vibe yang lebih brutalist, lebih arcade, atau lebih elegan
+teks/copy diganti     p.lead{color:var(--muted);max-width:70ch}
     .grid{display:grid;gap:var(--gap);margin-top:28px}
     .projects{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
     .card{border:1px solid #eee;padding:18px;border-radius:10px;background:#fafafa}
