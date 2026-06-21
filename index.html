@@ -1,39 +1,184 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Orbital — Space themed portfolio</title>
-  <meta name="description" content="Orbital — a small studio that makes stellar design. Space themed demo with animated starfield and parallax." />
+  <title>NADA Studio — Demo</title>
+  <meta name="description" content="Simple safe portfolio demo for NADA Studio" />
   <style>
-    /* ===========================
-       Base / variables
-       Single-file, no external fonts required
-       =========================== */
+    /* Simple, robust styles — system fonts only */
     :root{
-      --bg:#02030a;
-      --panel:#0f1720;
-      --muted:#96a0b1;
-      --accent:#7de3ff;
-      --accent-2:#8a6cff;
-      --glass: rgba(255,255,255,0.03);
-      --radius:12px;
-      --max:1200px;
+      --bg:#ffffff;
+      --text:#222;
+      --muted:#666;
+      --accent:#C4785A;
+      --maxw:1100px;
+      --gap:18px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); color:#e6eef6; -webkit-font-smoothing:antialiased}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+    .wrap{max-width:var(--maxw);margin:0 auto;padding:28px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{font-weight:700;font-size:1.1rem;letter-spacing:0.06em}
+    nav{display:flex;gap:12px;align-items:center}
     a{color:inherit;text-decoration:none}
-    .site{max-width:var(--max);margin:0 auto;padding:28px}
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
-    .logo{font-weight:700;letter-spacing:0.06em}
-    nav{display:flex;gap:10px}
-    .pill{padding:8px 12px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,0.04);font-weight:600;font-size:.9rem}
-    .pill.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#021020;border:0}
-    /* ===========================
-       CANVAS wrapper & hero
-       =========================== */
-    .hero-wrap{position:relative;min-height:78vh;overflow:hidden;border-radius:16px;display:flex;align-items:center}
-    canvas#stars{position:absolute;inset:0;display:block;width:100%;height:100%;z-index:0}
+    .btn{display:inline-block;padding:8px 12px;border:1px solid var(--text);border-radius:6px;font-weight:600}
+    .hero{padding:36px 0 18px}
+    h1{font-size:clamp(1.6rem,4vw,2.6rem);margin:8px 0 12px}
+    p.lead{color:var(--muted);max-width:70ch}
+    .grid{display:grid;gap:var(--gap);margin-top:28px}
+    .projects{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .card{border:1px solid #eee;padding:18px;border-radius:10px;background:#fafafa}
+    .card h3{margin:0 0 8px;font-size:1.05rem}
+    .card p{margin:0;color:var(--muted);font-size:0.95rem}
+    .about{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+    .about .col{flex:1 1 320px}
+    .contact{background:#f6f6f6;padding:18px;border-radius:10px}
+    label{display:block;font-weight:600;margin-bottom:6px;font-size:0.9rem}
+    input,textarea{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:0.95rem}
+    textarea{min-height:100px;resize:vertical}
+    footer{margin-top:36px;padding:18px 0;color:var(--muted);font-size:0.9rem;border-top:1px solid #eee}
+    .small{font-size:0.85rem;color:var(--muted)}
+    /* responsive */
+    @media(min-width:900px){
+      .hero-row{display:flex;gap:24px;align-items:center}
+      .hero .left{flex:1}
+      .hero .right{width:320px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">NADA Studio</div>
+      <nav aria-label="Main navigation">
+        <a class="small" href="#projects">Work</a>
+        <a class="small" href="#about">About</a>
+        <a class="small" href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-row">
+          <div class="left">
+            <h1>We make things people actually remember</h1>
+            <p class="lead">Small studio based in Bandung. We craft brand identities, websites and motion with care — not shortcuts.</p>
+            <div style="margin-top:16px">
+              <a class="btn" href="#projects">See our work</a>
+              <a class="btn" href="#contact" style="margin-left:8px">Work with us</a>
+            </div>
+          </div>
+          <div class="right small" aria-hidden="true" style="text-align:right;color:var(--muted)">
+            <div>Currently listening</div>
+            <div style="font-weight:700;margin-top:6px">Sunset Drive — FKJ</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" style="margin-top:18px">
+        <h2>Selected Work</h2>
+        <div class="grid projects" role="list">
+          <article class="card" role="listitem">
+            <h3>Kopi Nusantara Rebrand</h3>
+            <p>Brand identity for a craft coffee roastery.</p>
+          </article>
+          <article class="card" role="listitem">
+            <h3>Tanam — Mobile App</h3>
+            <p>App design for urban plant care enthusiasts.</p>
+          </article>
+          <article class="card" role="listitem">
+            <h3>Serat Typeface</h3>
+            <p>Custom typography for a local bookstore.</p>
+          </article>
+          <article class="card" role="listitem">
+            <h3>Liangliu Ceramics</h3>
+            <p>Art direction and visual storytelling for handmade pottery.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" style="margin-top:28px">
+        <h2>About</h2>
+        <div class="about">
+          <div class="col">
+            <p>Hi — we’re Raka & Maya, two designers running a small studio in Bandung. We like slow mornings, strong coffee, and design that lasts.</p>
+            <p class="small" style="margin-top:12px"><strong>Values:</strong> Honest work, real partnership, craft over speed.</p>
+          </div>
+          <div class="col">
+            <div style="border-radius:10px;overflow:hidden;background:#e9e6e2;padding:12px;text-align:center">
+              <div style="font-weight:700">Studio snapshot</div>
+              <div class="small" style="margin-top:8px;color:var(--muted)">(placeholder image)</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" style="margin-top:28px">
+        <h2>Contact</h2>
+        <div class="grid" style="grid-template-columns:1fr;gap:18px">
+          <div class="contact">
+            <form id="contactForm" novalidate>
+              <div style="margin-bottom:12px">
+                <label for="name">Name</label>
+                <input id="name" name="name" required placeholder="Your name" />
+              </div>
+              <div style="margin-bottom:12px">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required placeholder="you@example.com" />
+              </div>
+              <div style="margin-bottom:12px">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required placeholder="Tell us about your project"></textarea>
+              </div>
+              <div>
+                <button type="submit" class="btn">Send message</button>
+                <span id="formStatus" class="small" style="margin-left:12px;color:var(--muted)"></span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="small">Built with care in Bandung — NADA Studio</div>
+    </footer>
+  </div>
+
+  <script>
+    // Minimal, safe form handling (no external requests)
+    (function(){
+      const form = document.getElementById('contactForm');
+      const status = document.getElementById('formStatus');
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const message = form.message.value.trim();
+        if(!name || !email || !message){
+          status.textContent = 'Please fill required fields.';
+          status.style.color = '#C33';
+          return;
+        }
+        // Simulate success
+        status.style.color = 'green';
+        status.textContent = 'Message received. Thanks!';
+        form.reset();
+      });
+    })();
+  </script>
+</body>
+</html>
     /* decorative planets */
     .planet{
       position:absolute;border-radius:50%;z-index:1;pointer-events:none;filter:drop-shadow(0 10px 30px rgba(0,0,0,0.6));
